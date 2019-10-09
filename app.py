@@ -32,16 +32,16 @@ def stop():
     try:
         #subprocess.Popen(endereco_stop)
         win32serviceutil.StopService(service, machine)
-        flash("Sucesso Stop")
+        flash("Sucesso Stop!")
     except:
-        flash("Falha Stop")
+        flash("Falha Stop!")
         print('A execucao do .bat falhou, check o endereco do arquivo .bat')
     return redirect (url_for('home'))
 @app.route('/start')
 def start(): 
     try:
         win32serviceutil.StartService(service, machine)
-        flash("Sucesso Start")    
+        flash("Sucesso Start!")    
     except:
         flash("FALHA Start") 
         print('A execucao do .bat falhou, check o endereco do arquivo .bat')
@@ -51,9 +51,9 @@ def reset():
     try:
         #subprocess.Popen(endereco_reset)
         win32serviceutil.RestartService(service, machine)
-        flash("Sucesso Reset")    
+        flash("Sucesso Reset!")    
     except:
-        flash("falha Reset") 
+        flash("falha Reset!") 
         print('A execucao do serviço falhou!')
     return redirect (url_for('home'))
 @app.route('/download', methods=['GET', 'POST'])

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8"></script>
+    <link href="style.css" rel="stylesheet"> 
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">    
+    <!-- Site Metas -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='sharp_group_work_black_18dp.ico') }}">
+    <title>GMAX</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
+            integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+    <script>
+        var socket = io();
+        socket.on('connect', function() {
+            socket.emit('message', {status: 'CONECTADO!'});
+        });
+                
+        socket.on('message', function(data) {
+            //console.log('Dados da maquina: ', data)
+            machine=JSON.parse(data)
+            console.log(machine)
+            document.getElementById("cpu_total").innerHTML=machine.cpu_total
+            document.getElementById("ram_total").innerHTML=machine.ram_total
+            document.getElementById("cpu_java").innerHTML=machine.cpu_process
+            document.getElementById("ram_java").innerHTML=machine.ram_process
+
+                  
+                });
+        
+    </script>
+    
+    
+    <script language=javascript>
+      function confirmacao(){
+
+            alert("Operação realizada com sucesso!");                  
+          }
+       
+      </script>
+
+
+            <div class="wrapper">
+                    <!-- Navigation -->
+                    <nav class="main-nav">
+                      <ul>
+                        <li>
+                          <a onclick="confirmacao()" href="/download">Download</a>
+                        </li>
+                        <li>
+                          <a onclick="confirmacao()" href ="/stop">Stop</a>
+                          
+                        </li>
+                        <li>
+                          <a onclick="confirmacao()" href="/start">Start</a>
+                        </li>
+                        <li>
+                          <a onclick="confirmacao()" href="/reset">Reset</a>
+                        </li>
+                      </ul>
+                    </nav>
+                    <div>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                    
+                      {% for category, message in messages %}
+                    
+                      <div class="alert alert-success">
+                      
+                          {{ message }}
+                      
+                      </div>
+                      {% endfor %}
+                    
+                      {% endif %}
+                      {% endwith %}
+                    </div>
+                    <!-- Top Container -->
+                    <div>
+                      <section class="top-container">
+                        <header class="showcase">
+                            
+                                <iframe style="width: 100%; min-height: 490px;" src="http://192.168.1.18:8081/maximus/pages/" scrolling="si" frameborder="si"></iframe>
+                            
+                        </header>
+                       
+                      </section>
+                      </div>
+                    <!-- Boxes Section -->
+                    <section class="boxes">
+                      <div class="box">
+                        <i class="fas fa-chart-pie fa-4x"></i>
+                        <h3>CPU TOTAL %</h3>
+                        <p id="cpu_total"></p>
+                      </div>
+                      <div class="box">
+                        <i class="fas fa-globe fa-4x"></i>
+                        <h3>RAM TOTAL %</h3>
+                        <p id="ram_total"></p>
+                      </div>
+                      <div class="box">
+                        <i class="fas fa-cog fa-4x"></i>
+                        <h3>CPU JAVA %</h3>
+                        <p id="cpu_java"></p>
+                        
+                      </div>
+                      <div class="box">
+                        <i class="fas fa-users fa-4x"></i>
+                        <h3>RAM JAVA Mb</h3>
+                        <p id="ram_java"></p>
+                      </div>
+                    </section>
+                   
+                
+                    <!-- Footer -->
+                    <footer>
+                      <p>CTC - 2019</p>
+                    </footer>
+                
+                  </div>
+                  <!-- Wrapper Ends -->
+    
+    
+</body>
+</html>

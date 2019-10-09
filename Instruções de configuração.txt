@@ -1,0 +1,2 @@
+O arquivo config_download.txt contem unicamente o endereço do arquivo que se deseja baixar, lembrando que deve-se passar o caminho completo sem aspas duplas ou simples.
+Exemplo: C:/Users/Fabio Martins/Documents/teste.txt

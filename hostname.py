@@ -1,3 +1,6 @@
 import socket
-hostname = socket.gethostname()
-print(hostname)
+try:
+	hostname = socket.gethostname()
+	print(hostname)
+except:
+	print('Falha ao obter hostname!')

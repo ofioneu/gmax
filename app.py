@@ -7,13 +7,18 @@ import os
 import sys
 import json
 import subprocess
-from datetime import datetime
 import datetime
+from datetime import datetime, date
 import time
 from flask import send_file
 import socket
 import win32serviceutil
 import threading
+import os.path
+import shutil
+import win32ui
+
+
 
 
 app = Flask(__name__, static_url_path='')
@@ -21,8 +26,15 @@ app.config['SECRET_KEY'] = '@11tahe89!'
 socketio = SocketIO(app)
 
 hostname = socket.gethostname()
-service='JBMAXIMUS'
+service_joboss='JBMAXIMUS'
+service_modulo_bd = 'MODULO BD'
+service_modulo_controle = 'MODULO CONTROLE'
+service_modulo_digicon = 'MODULO DIGICON'
 machine=hostname
+
+
+
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -31,30 +43,144 @@ def home():
 def stop():   
     try:
         #subprocess.Popen(endereco_stop)
-        win32serviceutil.StopService(service, machine)
-        flash("Sucesso Stop!")
+        print("Parando o Jboss")
+        win32serviceutil.StopService(service_joboss, machine)    
+        time.sleep(3)
+        print('Parando o Modulo BD')
+        win32serviceutil.StopService(service_modulo_bd, machine)    
+        time.sleep(3)
+        print('Parando o Modulo Controle')
+        win32serviceutil.StopService(service_modulo_controle, machine)   
+        time.sleep(3)
+        print('Parando o Modulo Digicon')
+        win32serviceutil.StopService(service_modulo_digicon, machine)    
+        time.sleep(3)
+        flash("Sucesso Stop")
     except:
-        flash("Falha Stop!")
+        flash("Falha Stop")
         print('A execucao do .bat falhou, check o endereco do arquivo .bat')
     return redirect (url_for('home'))
 @app.route('/start')
-def start(): 
+def start():
+
+    def service_running_jboss(process_name, hostname):
+        return win32serviceutil.QueryServiceStatus(process_name,hostname)[1]==4
+    running_jboss = service_running_jboss(service_joboss, machine)
+
+    def service_running_BD(process_name, hostname):
+        return win32serviceutil.QueryServiceStatus(process_name,hostname)[1]==4
+    running_BD =service_running_BD(service_modulo_bd, machine)
+    def service_running_controle(process_name, hostname):
+        return win32serviceutil.QueryServiceStatus(process_name,hostname)[1]==4
+    running_controle =service_running_controle(service_modulo_controle, machine)
+    def service_running_digicon(process_name, hostname):
+        return win32serviceutil.QueryServiceStatus(process_name,hostname)[1]==4
+    running_digicon =service_running_digicon(service_modulo_digicon, machine)
+    
     try:
-        win32serviceutil.StartService(service, machine)
-        flash("Sucesso Start!")    
+        if not running_BD:
+            print('Iniciando modulo BD')
+            win32serviceutil.StartService(service_modulo_bd, machine)
+            time.sleep(1.5)
+        else:
+            print('Falha ao iniciar modulo BD!!')
+        if not running_controle:
+            print('Iniciando modulo Controle')
+            win32serviceutil.StartService(service_modulo_controle, machine)
+            time.sleep(1.5)
+        else:
+            print("Falha ao iniciar modulo controle")
+        if not running_digicon:
+            print('Iniciando modulo Digicon')
+            win32serviceutil.StartService(service_modulo_digicon, machine)
+            time.sleep(1.5)
+        else:
+            print("Falha ao iniciar modulo Digicon")
+            
+        if not running_jboss:               
+            print('Iniciando o Jboss!!!!')
+            win32serviceutil.StartService(service_joboss, machine)  
+            print('Jboss iniciado!!!!')            
+             
+        else:
+            print('Falha ao iniciar Jboss')
+        flash("Sucesso Start")    
     except:
         flash("FALHA Start") 
-        print('A execucao do .bat falhou, check o endereco do arquivo .bat')
+        
     return redirect (url_for('home'))
 @app.route('/reset')
-def reset():   
+def reset():
+    data_e_hora_atuais = datetime.now()
+    data_e_hora_em_texto = data_e_hora_atuais.strftime('%d-%m-%Y %H-%M-%S')
+
+    print("Parando o Jboss")
+    win32serviceutil.StopService(service_joboss, machine)    
+    time.sleep(3)
+    print('Parando o Modulo BD')
+    win32serviceutil.StopService(service_modulo_bd, machine)    
+    time.sleep(3)
+    print('Parando o Modulo Controle')
+    win32serviceutil.StopService(service_modulo_controle, machine)    
+    time.sleep(3)
+    print('Parando o Modulo Digicon')
+    win32serviceutil.StopService(service_modulo_digicon, machine)    
+    time.sleep(3)
+  
+
+    def service_running_jboss(process_name, hostname):
+        return win32serviceutil.QueryServiceStatus(process_name,hostname)[1]==4
+    running_jboss = service_running_jboss(service_joboss, machine)
+
+    def service_running_BD(process_name, hostname):
+        return win32serviceutil.QueryServiceStatus(process_name,hostname)[1]==4
+    running_BD =service_running_BD(service_modulo_bd, machine)
+    def service_running_controle(process_name, hostname):
+        return win32serviceutil.QueryServiceStatus(process_name,hostname)[1]==4
+    running_controle =service_running_controle(service_modulo_controle, machine)
+    def service_running_digicon(process_name, hostname):
+        return win32serviceutil.QueryServiceStatus(process_name,hostname)[1]==4
+    running_digicon =service_running_digicon(service_modulo_digicon, machine)
+    
     try:
-        #subprocess.Popen(endereco_reset)
-        win32serviceutil.RestartService(service, machine)
-        flash("Sucesso Reset!")    
+    
+        if not running_BD:
+            print('Iniciando modulo BD')
+            win32serviceutil.StartService(service_modulo_bd, machine)
+            time.sleep(1.5)
+        else:
+            print('Falha ao iniciar modulo BD!!')
+        if not running_controle:
+            print('Iniciando modulo Controle')
+            win32serviceutil.StartService(service_modulo_controle, machine)
+            time.sleep(1.5)
+        else:
+            print("Falha ao iniciar modulo controle")
+        if not running_digicon:
+            print('Iniciando modulo Digicon')
+            win32serviceutil.StartService(service_modulo_digicon, machine)
+            time.sleep(1.5)
+        else:
+            print("Falha ao iniciar modulo Digicon")
+            
+        if not running_jboss:               
+            print('Jboss rodando!!!!')
+            print('Renomeando log -- !!!!', data_e_hora_em_texto)
+            os.rename('C:/ambiente_dev_windows/jboss-CTC-limpo/standalone/log', 'C:/ambiente_dev_windows/jboss-CTC-limpo/backup_ log/log-'+ data_e_hora_em_texto)
+            print('Renomeado log!!!!')
+            print('Iniciando o Jboss!!!!')
+            win32serviceutil.StartService(service_joboss, machine)  
+            print('Jboss iniciado!!!!')            
+             
+        else:
+            print('Falha ao iniciar Jboss')
+                
+                            
+        flash("Sucesso reset!") 
     except:
-        flash("falha Reset!") 
+        flash("Falha Reset") 
         print('A execucao do serviço falhou!')
+
     return redirect (url_for('home'))
 @app.route('/download', methods=['GET', 'POST'])
 def downloadFile ():
@@ -71,6 +197,9 @@ def downloadFile ():
     return send_file(path, as_attachment=True)
     flash("Sucesso Download")
     return redirect (url_for('home'))
+
+
+
 @socketio.on('message')
 def machine_recursos(message):
     print(message)
@@ -119,7 +248,7 @@ def machine_recursos(message):
             }
             json_dados_maquina=json.dumps(dados_maquina)        
             emit('message', json_dados_maquina)
-            time.sleep(2)
+            time.sleep(10)
 tsocket=threading.Thread(target=machine_recursos)
 tsocket.start()
 

@@ -42,23 +42,40 @@ def home():
 @app.route('/stop')
 def stop():   
     try:
+        def service_running_jboss(process_name, hostname):
+            return win32serviceutil.QueryServiceStatus(process_name,hostname)[1]==4
+        running_jboss = service_running_jboss(service_joboss, machine)
+
+        def service_running_BD(process_name, hostname):
+            return win32serviceutil.QueryServiceStatus(process_name,hostname)[1]==4
+        running_BD =service_running_BD(service_modulo_bd, machine)
+        def service_running_controle(process_name, hostname):
+            return win32serviceutil.QueryServiceStatus(process_name,hostname)[1]==4
+        running_controle =service_running_controle(service_modulo_controle, machine)
+        def service_running_digicon(process_name, hostname):
+            return win32serviceutil.QueryServiceStatus(process_name,hostname)[1]==4
+        running_digicon =service_running_digicon(service_modulo_digicon, machine)
         #subprocess.Popen(endereco_stop)
-        print("Parando o Jboss")
-        win32serviceutil.StopService(service_joboss, machine)    
-        time.sleep(3)
-        print('Parando o Modulo BD')
-        win32serviceutil.StopService(service_modulo_bd, machine)    
-        time.sleep(3)
-        print('Parando o Modulo Controle')
-        win32serviceutil.StopService(service_modulo_controle, machine)   
-        time.sleep(3)
-        print('Parando o Modulo Digicon')
-        win32serviceutil.StopService(service_modulo_digicon, machine)    
-        time.sleep(3)
-        flash("Sucesso Stop")
+        if running_jboss:
+            print("Parando o Jboss")
+            win32serviceutil.StopService(service_joboss, machine)    
+            time.sleep(3)
+        if running_BD:
+            print('Parando o Modulo BD')
+            win32serviceutil.StopService(service_modulo_bd, machine)    
+            time.sleep(3)
+        if running_controle:
+            print('Parando o Modulo Controle')
+            win32serviceutil.StopService(service_modulo_controle, machine)   
+            time.sleep(3)
+        if running_digicon:
+            print('Parando o Modulo Digicon')
+            win32serviceutil.StopService(service_modulo_digicon, machine)    
+            time.sleep(3)
+            flash("Sucesso Stop")
     except:
         flash("Falha Stop")
-        print('A execucao do .bat falhou, check o endereco do arquivo .bat')
+        print('Falha ao realizar o stop')
     return redirect (url_for('home'))
 @app.route('/start')
 def start():

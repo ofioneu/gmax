@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  background: #ccc;
+  background:#CCC;
   margin: 30px 50px;
   line-height: 1.4;
 }
@@ -54,6 +54,7 @@ img {
   text-transform: uppercase;
   font-size: 1.1rem;
   box-shadow: var(--shadow);
+  font-weight: bold;
 }
 
 .main-nav a:hover {
@@ -72,7 +73,7 @@ img {
  .showcase {
  grid-area: showcase;
   min-height: 400px;
-  /*background: url(https://image.ibb.co/kYJK8x/showcase.jpg);*/
+  /*background: url(m2.jpg);*/
   background-size: cover;
   background-position: center;
   padding: 3rem;
@@ -153,10 +154,6 @@ img {
   box-shadow: var(--shadow);
 }
 
-.alert-success{
-	/*background: green;*/
-	 /*width: 100%;*/
-}
 
 /* Footer */
 footer {
@@ -202,3 +199,36 @@ footer {
       'top-box-b';
   }
 }
+#message ,#mensagem{
+  color:#068488;
+  font-weight: bold;
+  font-size: 30px;
+  text-align: center;
+  width: 100%;
+}
+
+#message-info{
+  color:#068488;
+  font-weight: bold;
+  font-size: 30px;
+  text-align: center;
+  width: 100%;
+}
+
+#message-error{
+  color:red;
+  font-weight: bold;
+  font-size: 30px;
+  text-align: center;
+  width: 100%;
+}
+
+
+#message-sucess{
+  color:#068488;;
+  font-weight: bold;
+  font-size: 30px;
+  text-align: center;
+  width: 100%;
+}
+

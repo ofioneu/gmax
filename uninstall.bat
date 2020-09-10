@@ -1,3 +1,3 @@
-call venv\Scripts\actvate
+call venv\Scripts\actvate.bat
 
 call  py uninstall.py

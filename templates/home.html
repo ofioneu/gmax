@@ -17,9 +17,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.js"
-            integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
-            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"> </script>
 </head>
 <body>
     <script>
@@ -44,12 +42,30 @@
     
     
     <script language=javascript>
-      function confirmacao(){
 
-            alert("Operação realizada com sucesso!");                  
-          }
+        function validaStatusStart(){
+          document.getElementById('mensagem').innerHTML = 'START - Iniciando o Sistema Maximus. Aguarde!';
+           
+        }
+        function validaStatusStop(){
+          document.getElementById('mensagem').innerHTML = 'STOP - Efetuando a interrupção do sistema. Aguarde';
+           
+        }
+
+        function validaStatusReset(){
+          document.getElementById('mensagem').innerHTML = 'RESET - Efetuando o reset do sistema. Aguarde!';
+           
+        }
+
+        
+        setInterval(function(){
+          document.getElementById('iframe').src += '';
+          
+        },20000);
+
        
-      </script>
+      
+    </script>
 
 
             <div class="wrapper">
@@ -57,27 +73,26 @@
                     <nav class="main-nav">
                       <ul>
                         <li>
-                          <a onclick="confirmacao()" href="/download">Download</a>
+                          <a onclick=" confirmacao()" href="/download" >Download</a>
                         </li>
                         <li>
-                          <a onclick="confirmacao()" href ="/stop">Stop</a>
+                          <a onclick= "validaStatusStop()" href ="/stop">Stop</a>
                           
                         </li>
                         <li>
-                          <a onclick="confirmacao()" href="/start">Start</a>
-                        </li>
+                          <a onclick="validaStatusStart()" href="/start">Start</a>                        </li>
                         <li>
-                          <a onclick="confirmacao()" href="/reset">Reset</a>
+                          <a onclick="validaStatusReset()" href="/reset">Reset</a>
                         </li>
                       </ul>
                     </nav>
-                    <div>
+                    <div id ="return">
                     {% with messages = get_flashed_messages(with_categories=true) %}
                       {% if messages %}
                     
                       {% for category, message in messages %}
                     
-                      <div class="alert alert-success">
+                      <div id="message-{{ category }}">
                       
                           {{ message }}
                       
@@ -87,13 +102,16 @@
                       {% endif %}
                       {% endwith %}
                     </div>
+
+                    <div id = "mensagem">
+
+                    </div>
+
                     <!-- Top Container -->
                     <div>
                       <section class="top-container">
-                        <header class="showcase">
-                            
-                                <iframe style="width: 100%; min-height: 490px;" src="http://192.168.1.18:8081/maximus/pages/" scrolling="si" frameborder="si"></iframe>
-                            
+                        <header class="showcase">                          
+                                <iframe id = "iframe" style="width: 100%; min-height: 490px;" src= {{ maximus_url }} scrolling="si" frameborder="si"></iframe>
                         </header>
                        
                       </section>

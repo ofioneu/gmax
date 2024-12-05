@@ -6,7 +6,7 @@ itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
 popen==0.1.20
-psutil==5.6.3
+psutil==5.6.6
 pypiwin32==223
 python-engineio==3.9.3
 python-socketio==4.3.1
